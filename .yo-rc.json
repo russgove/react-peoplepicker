@@ -1,0 +1,8 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "libraryName": "react-peoplepicker",
+    "framework": "react",
+    "version": "1.0.0",
+    "libraryId": "63591ad8-7aa6-4794-af64-bc5ffcb6f9e2"
+  }
+}

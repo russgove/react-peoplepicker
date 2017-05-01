@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "entry": "./lib/webparts/reactPeoplepickerExample/ReactPeoplepickerExampleWebPart.js",
+      "manifest": "./src/webparts/reactPeoplepickerExample/ReactPeoplepickerExampleWebPart.manifest.json",
+      "outputPath": "./dist/react-peoplepicker-example.bundle.js"
+    }
+  ],
+  "externals": {},
+  "localizedResources": {
+    "reactPeoplepickerExampleStrings": "webparts/reactPeoplepickerExample/loc/{locale}.js"
+  }
+}

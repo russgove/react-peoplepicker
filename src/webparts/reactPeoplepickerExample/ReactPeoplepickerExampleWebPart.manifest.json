@@ -1,0 +1,20 @@
+{
+  "$schema": "../../../node_modules/@microsoft/sp-module-interfaces/lib/manifestSchemas/jsonSchemas/clientSideComponentManifestSchema.json",
+
+  "id": "2b467fbe-67dc-43b3-bcac-e4fdb08ac4af",
+  "alias": "ReactPeoplepickerExampleWebPart",
+  "componentType": "WebPart",
+  "version": "0.0.1",
+  "manifestVersion": 2,
+
+  "preconfiguredEntries": [{
+    "groupId": "2b467fbe-67dc-43b3-bcac-e4fdb08ac4af",
+    "group": { "default": "Under Development" },
+    "title": { "default": "react-peoplepicker-example" },
+    "description": { "default": "form webpart that uses Office-ui-Fabric PeoplePicler to edit a User field" },
+    "officeFabricIconFontName": "Page",
+    "properties": {
+      "description": "react-peoplepicker-example"
+    }
+  }]
+}

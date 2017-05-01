@@ -20,6 +20,7 @@ import {
 export default class ReactPeoplepickerExampleWebPart extends BaseClientSideWebPart<IReactPeoplepickerExampleWebPartProps> {
   private task: Task;
   private reactElement: React.ReactElement<IReactPeoplepickerExampleProps>;
+  
   public onInit(): Promise<void> {
 
     return super.onInit().then(_ => {

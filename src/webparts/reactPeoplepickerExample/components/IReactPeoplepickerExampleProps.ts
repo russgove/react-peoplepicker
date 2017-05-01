@@ -4,9 +4,11 @@ import {
 import { Task, modes } from "../dataModel";
 export interface IReactPeoplepickerExampleProps {
   description: string;
-    peoplesearch: (searchText: string, currentSelected: IPersonaProps[]) => Promise<IPersonaProps[]>;
-      ensureUser: (email) => Promise<any>;
-      task:Task;
-      mode:modes;
+  peoplesearch: (searchText: string, currentSelected: IPersonaProps[]) => Promise<IPersonaProps[]>;
+  ensureUser: (email) => Promise<any>;
+  task: Task;
+  mode: modes;
+  save: (tr) => any; //make this return promise
+  cancel: () => any;
 
 }

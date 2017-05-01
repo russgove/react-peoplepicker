@@ -10,6 +10,9 @@ export class Task {
     public Title: string;
     public AssignedToId: number;
     public AssignedTo: string;
+    public Priority: string;
+    public DueDate: string;
+    public Status: string;
 
 
 

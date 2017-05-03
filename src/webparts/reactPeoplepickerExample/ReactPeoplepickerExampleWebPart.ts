@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Version ,UrlQueryParameterCollection} from '@microsoft/sp-core-library';
+import { Version, UrlQueryParameterCollection } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
@@ -20,7 +20,7 @@ import {
 export default class ReactPeoplepickerExampleWebPart extends BaseClientSideWebPart<IReactPeoplepickerExampleWebPartProps> {
   private task: Task;
   private reactElement: React.ReactElement<IReactPeoplepickerExampleProps>;
-  
+
   public onInit(): Promise<void> {
 
     return super.onInit().then(_ => {
@@ -31,8 +31,36 @@ export default class ReactPeoplepickerExampleWebPart extends BaseClientSideWebPa
       //  this.loadData();
     });
   }
-  public render(): void {
+  private save(tr: Task): Promise<any> {
+    // remove lookups
+    let copy = _.clone(tr) as any;
+    delete copy.RequestorName;
+    delete copy.ParentTR;
+    let technicalSpecialists = (copy.TechSpecId) ? copy.TechSpecId : [];
+    delete copy.TechSpecId;
+    copy["TechSpecId"] = {};
+    copy["TechSpecId"]["results"] = technicalSpecialists;
 
+
+
+
+    if (tr.Id !== null) {
+      return pnp.sp.web.lists.getByTitle("Technical Requests").items.getById(tr.Id).update(copy).then((x) => {
+
+        this.navigateToSource();
+      });
+    }
+    else {
+      return pnp.sp.web.lists.getByTitle("Technical Requests").items.add(copy).then((x) => {
+
+        this.navigateToSource();
+
+      });
+    }
+
+  }
+  public render(): void {
+debugger;
     // hide the ribbon
     if (document.getElementById("s4-ribbonrow")) {
       document.getElementById("s4-ribbonrow").style.display = "none";
@@ -45,7 +73,8 @@ export default class ReactPeoplepickerExampleWebPart extends BaseClientSideWebPa
 
       peoplesearch: this.peoplesearch,
       task: new Task(),
-      save: this.save.bind(this)
+      save: this.save.bind(this),
+      cancel: this.cancel.bind(this)
     };
     let batch = pnp.sp.createBatch();
     // get loolup field values here using the natch
@@ -54,16 +83,10 @@ export default class ReactPeoplepickerExampleWebPart extends BaseClientSideWebPa
     if (this.properties.mode !== modes.NEW) {
       if (queryParameters.getValue("Id")) {
         const id: number = parseInt(queryParameters.getValue("Id"));
-        let fields = "*,ParentTR/Title,Requestor/Title";
+        let fields = "*,AssignedTo/Title";
         // get the requested tr
-        pnp.sp.web.lists.getByTitle("Tasks").items.getById(id).expand("AssignedTo").select(fields).inBatch(batch).get()
+        pnp.sp.web.lists.getByTitle("Tasks").items.getById(id).expand("AssignedTo").select(fields).inBatch(batch).getAs<Task>()
 
-          .then((item) => {
-            formProps.task = new Task();
-            this.moveFieldsToTR(formProps.task, item);
-
-
-          })
           .catch((error) => {
             console.log("ERROR, An error occured fetching the listitem");
             console.log(error.message);
@@ -83,9 +106,21 @@ export default class ReactPeoplepickerExampleWebPart extends BaseClientSideWebPa
       ReactDom.render(this.reactElement, this.domElement);
     }
     );
-   
-  }
 
+  }
+  private navigateToSource() {
+    let queryParameters = new UrlQueryParameterCollection(window.location.href);
+    let encodedSource = queryParameters.getValue("Source");
+    if (encodedSource) {
+      let source = decodeURIComponent(encodedSource);
+      console.log("source uis " + source);
+      window.location.href = source;
+    }
+  }
+  private cancel(): void {
+    this.navigateToSource();
+
+  }
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
